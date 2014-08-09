@@ -1,0 +1,97 @@
+<!doctype html>
+
+<html>
+
+<head>
+
+	<meta charset="utf-8">
+
+	<title>main</title>
+
+	<link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+
+	<script type="text/javascript" src="../bower_components/requirejs/require.js"></script>
+	<script type="text/javascript">
+
+		// load amdconfig manually
+		require(['../amdconfig'], function(undef) {
+			// load demo
+			require(['../demo/main'], function() {
+
+				console.log('main demo successfully loaded and ran.');
+
+			});
+		});
+
+	</script>
+
+	<style type="text/css">
+		.invalid {
+			border: 1px dashed red;
+		}
+
+		input {
+			transition: all 0.5s ease;
+		}
+
+		.invalid input {
+			background-color: #FFABAB;
+		}
+	</style>
+
+</head>
+
+<body>
+
+	<a href="../index.html">Menu</a>
+
+	<div class="container-fluid">
+
+		<div class="row">
+			<div id="display" class="col-md-4">
+
+				<div class="row">
+					<span class="col-md-3">Name</span>
+					<span class="col-md-9" data-bind-out-name="html"></span>
+				</div>
+				<div class="row">
+					<span class="col-md-3">Last Name</span>
+					<span class="col-md-9" data-bind-out-last-name="html"></span>
+				</div>
+				<div class="row">
+					<span class="col-md-3">Labels</span>
+					<span class="col-md-9" data-bind-out-labels="html"></span>
+				</div>
+			</div>
+
+			<div id="form" class="col-md-4"></div>
+
+			<div id="form-builder" class="col-md-4">
+				<div class="row">
+					<b>type:</b>
+					<br>
+					<input data-bind-type="value" placeholder="type">
+				</div>
+				<div class="row">
+					<b>attribute:</b>
+					<br>
+					<input data-bind-attribute="value" placeholder="type">
+				</div>
+				<div class="row">
+					<b>options:</b>
+					<br>
+					<small>(separated by commas)</small>
+					<br>
+					<textarea data-bind-options="value" placeholder="options"></textarea>
+				</div>
+
+				<button data-bind-on-click="addField" >CREATE FIELD</button>
+			</div>
+		</div>
+
+	</div>
+
+
+</body>
+
+</html>

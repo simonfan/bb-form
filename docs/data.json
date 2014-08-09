@@ -1,0 +1,217 @@
+{
+    "project": {
+        "name": "bb-form",
+        "version": "0.0.0"
+    },
+    "files": {
+        "js/bb-form/field-views/base.js": {
+            "name": "js/bb-form/field-views/base.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/bb-form/field-views/text.js": {
+            "name": "js/bb-form/field-views/text.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/bb-form/aux.js": {
+            "name": "js/bb-form/aux.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/bb-form/fields.js": {
+            "name": "js/bb-form/fields.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/bb-form.js": {
+            "name": "js/bb-form.js",
+            "modules": {
+                "BbForm": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "BbForm": {
+            "name": "BbForm",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "js/bb-form.js",
+            "line": 1,
+            "description": "AMD module."
+        }
+    },
+    "classes": {},
+    "classitems": [
+        {
+            "file": "js/bb-form/field-views/base.js",
+            "line": 28,
+            "description": "Handles changes on the value of the input.",
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/bb-form/field-views/text.js",
+            "line": 28,
+            "description": "Handles changes on the value of the input.",
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/bb-form/aux.js",
+            "line": 4,
+            "description": "Converts a camel cased string to a dashed one.\nCopied from:\nhttp://jamesroberts.name/blog/2010/02/22/string-functions-for-javascript-trim-to-camel-case-to-dashed-and-to-underscore/",
+            "params": [
+                {
+                    "name": "str",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/bb-form/fields.js",
+            "line": 9,
+            "description": "Hash on which fields are defined.",
+            "type": "{Object}",
+            "class": ""
+        },
+        {
+            "file": "js/bb-form/fields.js",
+            "line": 36,
+            "description": "Retrieves the input model's html\nbased on the type.",
+            "params": [
+                {
+                    "name": "fieldModel",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/bb-form/fields.js",
+            "line": 73,
+            "description": "A custom data attribute is an attribute in no namespace whose name\nstarts with the string \"data-\", has at least one character after the hyphen,\nis XML-compatible, and contains no characters in the range U+0041 to U+005A\n(LATIN CAPITAL LETTER A to LATIN CAPITAL LETTER Z).\n\nNote that it also restricts the usage to lower case, however another note applies:\n\nAll attributes on HTML elements in HTML documents get ASCII-lowercased automatically,\nso the restriction on ASCII uppercase letters doesn't affect such documents",
+            "class": ""
+        },
+        {
+            "file": "js/bb-form/fields.js",
+            "line": 91,
+            "description": "Override modelView for bbcv.",
+            "params": [
+                {
+                    "name": "model",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/bb-form/fields.js",
+            "line": 120,
+            "description": "Validates an attribute.",
+            "params": [
+                {
+                    "name": "attribute",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "value",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "fieldModel",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "js/bb-form/fields.js",
+            "line": 144,
+            "description": "Hash on which validators are defined.\nKeyed by either\nattribute name\nor input type.",
+            "type": "{Object}",
+            "class": ""
+        }
+    ],
+    "warnings": [
+        {
+            "message": "Missing item type\nHandles changes on the value of the input.",
+            "line": " js/bb-form/field-views/base.js:28"
+        },
+        {
+            "message": "Missing item type\nHandles changes on the value of the input.",
+            "line": " js/bb-form/field-views/text.js:28"
+        },
+        {
+            "message": "Missing item type\nConverts a camel cased string to a dashed one.\nCopied from:\nhttp://jamesroberts.name/blog/2010/02/22/string-functions-for-javascript-trim-to-camel-case-to-dashed-and-to-underscore/",
+            "line": " js/bb-form/aux.js:4"
+        },
+        {
+            "message": "Missing item type\nHash on which fields are defined.",
+            "line": " js/bb-form/fields.js:9"
+        },
+        {
+            "message": "Missing item type\nRetrieves the input model's html\nbased on the type.",
+            "line": " js/bb-form/fields.js:36"
+        },
+        {
+            "message": "Missing item type\nA custom data attribute is an attribute in no namespace whose name\nstarts with the string \"data-\", has at least one character after the hyphen,\nis XML-compatible, and contains no characters in the range U+0041 to U+005A\n(LATIN CAPITAL LETTER A to LATIN CAPITAL LETTER Z).\n\nNote that it also restricts the usage to lower case, however another note applies:\n\nAll attributes on HTML elements in HTML documents get ASCII-lowercased automatically,\nso the restriction on ASCII uppercase letters doesn't affect such documents",
+            "line": " js/bb-form/fields.js:73"
+        },
+        {
+            "message": "Missing item type\nOverride modelView for bbcv.",
+            "line": " js/bb-form/fields.js:91"
+        },
+        {
+            "message": "Missing item type\nValidates an attribute.",
+            "line": " js/bb-form/fields.js:120"
+        },
+        {
+            "message": "Missing item type\nHash on which validators are defined.\nKeyed by either\nattribute name\nor input type.",
+            "line": " js/bb-form/fields.js:144"
+        }
+    ]
+}

@@ -1,0 +1,25 @@
+{
+  "name": "bb-form",
+  "main": "built/bb-form.js",
+  "version": "0.0.0",
+  "description": "Some module...",
+  "dependencies": {
+    "bbcv": "0.7.10",
+    "bbmv": "0.14.17",
+    "lodash": "~2.4.1",
+    "bb-dock": "0.7.11",
+    "jquery-file-upload": "~9.7.0"
+  },
+  "devDependencies": {
+    "requirejs": "*",
+    "requirejs-text": "*",
+    "underscore": "*",
+    "jquery": "*",
+    "qunit": "*",
+    "bootstrap": "~3.2.0"
+  },
+  "resolutions": {
+    "lowercase-backbone": "~0.3.7",
+    "subject": "0.5.9"
+  }
+}

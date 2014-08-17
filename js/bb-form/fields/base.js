@@ -48,12 +48,12 @@ define(function defBaseFieldView(require, exports, module) {
 		handleValidationError: function handleValidationError(error) {
 			this.$el.addClass('invalid');
 
-			this.$el.find('[data-validation-message]').html(error.error);
+			this.$el.find('[data-bb-form-message]').show().html(error.error);
 		},
 
 		handleValidationSuccess: function handleValidationSuccess() {
 			this.$el.removeClass('invalid');
-			this.$el.find('[data-validation-message]').html('');
+			this.$el.find('[data-bb-form-message]').hide().html('');
 		},
 
 	});

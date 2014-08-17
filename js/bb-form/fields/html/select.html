@@ -1,5 +1,8 @@
 <div>
 	<select data-bind-<%- attribute %>="val" data-binding-event="change">
+
+		<option value="">NONE</option>
+
 		<% _.forEach(options, function(opt) { %>
 			<option value="<%- opt.value %>">
 				<%- opt.label %>

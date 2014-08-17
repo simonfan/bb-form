@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>js/bb-form/field-views/base.js - bb-form</title>
+    <title>js/bb-form/fields/base.js - bb-form</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -82,7 +82,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: js/bb-form/field-views/base.js</h1>
+                        <h1 class="file-heading">File: js/bb-form/fields/base.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -136,12 +136,12 @@ define(function defBaseFieldView(require, exports, module) {
 		handleValidationError: function handleValidationError(error) {
 			this.$el.addClass(&#x27;invalid&#x27;);
 
-			this.$el.find(&#x27;[data-validation-message]&#x27;).html(error.error);
+			this.$el.find(&#x27;[data-bb-form-message]&#x27;).show().html(error.error);
 		},
 
 		handleValidationSuccess: function handleValidationSuccess() {
 			this.$el.removeClass(&#x27;invalid&#x27;);
-			this.$el.find(&#x27;[data-validation-message]&#x27;).html(&#x27;&#x27;);
+			this.$el.find(&#x27;[data-bb-form-message]&#x27;).hide().html(&#x27;&#x27;);
 		},
 
 	});

@@ -98,6 +98,18 @@ define(function (require, exports, module) {
 	var bbcv = require(&#x27;bbcv&#x27;),
 		bbmv = require(&#x27;bbmv&#x27;);
 
+
+	var fieldsView = require(&#x27;bb-form/fields/index&#x27;);
+
+	var bbForm = bbmv.extend({
+		initialize: function initializeBbForm(options) {
+			bbmv.prototype.initialize.call(this, options);
+
+			// create a fields view
+			this.fields = fieldsView(_.clone(options));
+		},
+	})
+
 	var bbForm = module.exports = bbcv.extend({
 
 		initialize: function initializeBbForm(options) {

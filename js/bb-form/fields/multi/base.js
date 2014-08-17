@@ -1,4 +1,4 @@
-define(function defTextInputView(require, exports, module) {
+define(function defBaseFieldView(require, exports, module) {
 
 
 	var view = require('lowercase-backbone').view,
@@ -31,20 +31,29 @@ define(function defTextInputView(require, exports, module) {
 		 */
 		handleValueChange: function handleValueChange() {
 
-			var inputModel = this.model,
-				attribute  = inputModel.get('attribute'),
+			var fieldModel = this.model,
+				attribute  = fieldModel.get('attribute'),
 				value      = this.formModel.get(attribute);
 
 				// run validation.
-			var valid = this.formView.validate(attribute, value, inputModel);
+			var validationError = this.formView.validate(attribute, value, fieldModel);
 
-			if (!valid) {
-
-				this.$el.addClass('invalid');
-
+			if (validationError) {
+				this.handleValidationError(validationError);
 			} else {
-				this.$el.removeClass('invalid');
+				this.handleValidationSuccess();
 			}
+		},
+
+		handleValidationError: function handleValidationError(error) {
+			this.$el.addClass('invalid');
+
+			this.$el.find('[data-bb-form-message]').show().html(error.error);
+		},
+
+		handleValidationSuccess: function handleValidationSuccess() {
+			this.$el.removeClass('invalid');
+			this.$el.find('[data-bb-form-message]').hide().html('');
 		},
 
 	});

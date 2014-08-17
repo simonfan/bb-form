@@ -1,8 +1,8 @@
 define(function defRetrieveInputTemplate(require, exports, module) {
 
-	var $        = require('jquery'),
-		_        = require('lodash'),
-		backbone = require('lowercase-backbone');
+	var $             = require('jquery'),
+		_             = require('lodash'),
+		baseFieldView = require('bb-form/fields/base');
 
 	var aux = require('bb-form/aux');
 
@@ -10,25 +10,24 @@ define(function defRetrieveInputTemplate(require, exports, module) {
 	 * Hash on which fields are defined.
 	 * @type {Object}
 	 */
-	exports.fields = {
+	exports.fieldDefinitions = {
 		text: {
-			template: _.template(require('text!bb-form/field-htmls/text.html')),
-			view    : require('bb-form/field-views/base'),
+			template: _.template(require('text!bb-form/fields/html/text.html')),
+			view    : require('bb-form/fields/text'),
 		},
 
 		textarea: {
-			template: _.template(require('text!bb-form/field-htmls/textarea.html')),
-			view    : require('bb-form/field-views/text')
+			template: _.template(require('text!bb-form/fields/html/textarea.html')),
+			view    : require('bb-form/fields/text')
 		},
 
 		select: {
-			template: _.template(require('text!bb-form/field-htmls/select.html')),
+			template: _.template(require('text!bb-form/fields/html/select.html')),
 		},
 
-
 		file: {
-			template: _.template(require('text!bb-form/field-htmls/file.html')),
-			view    : require('bb-form/field-views/file')
+			template: _.template(require('text!bb-form/fields/html/file.html')),
+			view    : require('bb-form/fields/file')
 		}
 
 	};
@@ -49,7 +48,7 @@ define(function defRetrieveInputTemplate(require, exports, module) {
 		if (!html) {
 
 			var type        = fieldModel.get('type'),
-				inputConfig = this.fields[type];
+				inputConfig = this.fieldDefinitions[type];
 
 			if (!inputConfig) {
 				throw new Error('No input configuration found for "' + type + '".');
@@ -94,7 +93,7 @@ define(function defRetrieveInputTemplate(require, exports, module) {
 	 * @param  {[type]} model [description]
 	 * @return {[type]}       [description]
 	 */
-	exports.modelView = function inputView(options) {
+	exports.modelView = function retrieveInputView(options) {
 
 		var fieldModel = options.model,
 			el         = options.el;
@@ -109,9 +108,9 @@ define(function defRetrieveInputTemplate(require, exports, module) {
 
 		// attrieve to get the specific view for the model's type
 		// defaults to backbone.view.
-		var inputView = fieldModel.get('view') ||
-			this.fields[fieldModel.get('type')].view ||
-			backbone.view;
+		var inputView = fieldModel.get('view')                 ||
+			this.fieldDefinitions[fieldModel.get('type')].view ||
+			baseFieldView;
 
 		// return the instance of the inputView.
 		return inputView(options);
@@ -157,8 +156,10 @@ define(function defRetrieveInputTemplate(require, exports, module) {
 					error: 'Value for field ' + attribute + ' is empty.'
 				}
 			}
-		}
+		},
 	};
+
+	exports.validators.select = exports.validators.text;
 
 
 

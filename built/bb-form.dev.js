@@ -1,3 +1,64 @@
+define('bb-form/fields/base',['require','exports','module','lowercase-backbone','lodash'],function defBaseFieldView(require, exports, module) {
+
+
+	var view = require('lowercase-backbone').view,
+		_    = require('lodash');
+
+	// keep direct reference to the initialization.
+	var _initialize = view.prototype.initialize;
+
+	module.exports = view.extend({
+
+		initialize: function initializeTextView(options) {
+			_initialize.call(this, options);
+
+			// save reference to the formView
+			// and the formModel
+			this.formView  = options.formView;
+			this.formModel = options.formModel;
+
+			// get the attribute this input should represent.
+			var attribute = this.model.get('attribute');
+
+			// listen to changes.
+			this.listenTo(this.formModel, 'change:' + attribute, this.handleValueChange);
+
+		},
+
+		/**
+		 * Handles changes on the value of the input.
+		 * @return {[type]} [description]
+		 */
+		handleValueChange: function handleValueChange() {
+
+			var fieldModel = this.model,
+				attribute  = fieldModel.get('attribute'),
+				value      = this.formModel.get(attribute);
+
+				// run validation.
+			var validationError = this.formView.validate(attribute, value, fieldModel);
+
+			if (validationError) {
+				this.handleValidationError(validationError);
+			} else {
+				this.handleValidationSuccess();
+			}
+		},
+
+		handleValidationError: function handleValidationError(error) {
+			this.$el.addClass('invalid');
+
+			this.$el.find('[data-bb-form-message]').show().html(error.error);
+		},
+
+		handleValidationSuccess: function handleValidationSuccess() {
+			this.$el.removeClass('invalid');
+			this.$el.find('[data-bb-form-message]').hide().html('');
+		},
+
+	});
+});
+
 define('bb-form/aux',['require','exports','module'],function defBbFormAux(require, exports, module) {
 
 
@@ -407,139 +468,34 @@ define('text',['module'], function (module) {
 });
 
 
-define('text!bb-form/field-htmls/text.html',[],function () { return '<div>\n\t<input type="text" data-bind-<%- attribute %>="value">\n\n\t<div data-validation-message></div>\n</div>\n';});
+define('text!bb-form/fields/html/text.html',[],function () { return '<div>\n\t<input data-bb-form-attribute="<%- attribute %>" type="text" data-bind-<%- attribute %>="value">\n\n\t<div data-bb-form-message></div>\n</div>\n';});
 
-define('bb-form/field-views/base',['require','exports','module','lowercase-backbone','lodash'],function defBaseFieldView(require, exports, module) {
+define('bb-form/fields/text',['require','exports','module','bb-form/fields/base'],function defTextInputView(require, exports, module) {
 
+	var baseFieldView = require('bb-form/fields/base');
 
-	var view = require('lowercase-backbone').view,
-		_    = require('lodash');
-
-	// keep direct reference to the initialization.
-	var _initialize = view.prototype.initialize;
-
-	module.exports = view.extend({
-
-		initialize: function initializeTextView(options) {
-			_initialize.call(this, options);
-
-			// save reference to the formView
-			// and the formModel
-			this.formView  = options.formView;
-			this.formModel = options.formModel;
-
-			// get the attribute this input should represent.
-			var attribute = this.model.get('attribute');
-
-			// listen to changes.
-			this.listenTo(this.formModel, 'change:' + attribute, this.handleValueChange);
-
-		},
-
-		/**
-		 * Handles changes on the value of the input.
-		 * @return {[type]} [description]
-		 */
-		handleValueChange: function handleValueChange() {
-
-			var fieldModel = this.model,
-				attribute  = fieldModel.get('attribute'),
-				value      = this.formModel.get(attribute);
-
-				// run validation.
-			var validationError = this.formView.validate(attribute, value, fieldModel);
-
-			if (validationError) {
-				this.handleValidationError(validationError);
-			} else {
-				this.handleValidationSuccess();
-			}
-		},
-
-		handleValidationError: function handleValidationError(error) {
-			this.$el.addClass('invalid');
-
-			this.$el.find('[data-validation-message]').html(error.error);
-		},
-
-		handleValidationSuccess: function handleValidationSuccess() {
-			this.$el.removeClass('invalid');
-			this.$el.find('[data-validation-message]').html('');
-		},
-
-	});
-});
-
-
-define('text!bb-form/field-htmls/textarea.html',[],function () { return '<div>\n\t<textarea data-bind-<%- attribute %>="value"></textarea>\n</div>\n';});
-
-define('bb-form/field-views/text',['require','exports','module','lowercase-backbone','lodash'],function defTextInputView(require, exports, module) {
-
-
-	var view = require('lowercase-backbone').view,
-		_    = require('lodash');
-
-	// keep direct reference to the initialization.
-	var _initialize = view.prototype.initialize;
-
-	module.exports = view.extend({
-
-		initialize: function initializeTextView(options) {
-			_initialize.call(this, options);
-
-			// save reference to the formView
-			// and the formModel
-			this.formView  = options.formView;
-			this.formModel = options.formModel;
-
-			// get the attribute this input should represent.
-			var attribute = this.model.get('attribute');
-
-			// listen to changes.
-			this.listenTo(this.formModel, 'change:' + attribute, this.handleValueChange);
-
-		},
-
-		/**
-		 * Handles changes on the value of the input.
-		 * @return {[type]} [description]
-		 */
-		handleValueChange: function handleValueChange() {
-
-			var inputModel = this.model,
-				attribute  = inputModel.get('attribute'),
-				value      = this.formModel.get(attribute);
-
-				// run validation.
-			var valid = this.formView.validate(attribute, value, inputModel);
-
-			if (!valid) {
-
-				this.$el.addClass('invalid');
-
-			} else {
-				this.$el.removeClass('invalid');
-			}
-		},
-
-	});
-});
-
-
-define('text!bb-form/field-htmls/select.html',[],function () { return '<div>\n\t<select data-bind-<%- attribute %>="val" data-binding-event="change">\n\t\t<% _.forEach(options, function(opt) { %>\n\t\t\t<option value="<%- opt.value %>">\n\t\t\t\t<%- opt.label %>\n\t\t\t</option>\n\t\t<% }); %>\n\t</select>\n</div>\n';});
-
-
-define('text!bb-form/field-htmls/file.html',[],function () { return '<div>\n\t<input type="file">\n\n\t<input type="hidden" data-bind-<%- attribute %>="value">\n</div>\n';});
-
-define('bb-form/field-views/file',['require','exports','module'],function defFileInputView(require, exports, module) {
+	module.exports = baseFieldView.extend();
 
 });
 
-define('bb-form/fields',['require','exports','module','jquery','lodash','lowercase-backbone','bb-form/aux','text!bb-form/field-htmls/text.html','bb-form/field-views/base','text!bb-form/field-htmls/textarea.html','bb-form/field-views/text','text!bb-form/field-htmls/select.html','text!bb-form/field-htmls/file.html','bb-form/field-views/file'],function defRetrieveInputTemplate(require, exports, module) {
 
-	var $        = require('jquery'),
-		_        = require('lodash'),
-		backbone = require('lowercase-backbone');
+define('text!bb-form/fields/html/textarea.html',[],function () { return '<div>\n\t<textarea data-bind-<%- attribute %>="value"></textarea>\n</div>\n';});
+
+
+define('text!bb-form/fields/html/select.html',[],function () { return '<div>\n\t<select data-bind-<%- attribute %>="val" data-binding-event="change">\n\n\t\t<option value="">NONE</option>\n\n\t\t<% _.forEach(options, function(opt) { %>\n\t\t\t<option value="<%- opt.value %>">\n\t\t\t\t<%- opt.label %>\n\t\t\t</option>\n\t\t<% }); %>\n\t</select>\n</div>\n';});
+
+
+define('text!bb-form/fields/html/file.html',[],function () { return '<div>\n\t<input type="file">\n\n\t<input type="hidden" data-bind-<%- attribute %>="value">\n</div>\n';});
+
+define('bb-form/fields/file',['require','exports','module'],function defFileInputView(require, exports, module) {
+
+});
+
+define('bb-form/fields',['require','exports','module','jquery','lodash','bb-form/fields/base','bb-form/aux','text!bb-form/fields/html/text.html','bb-form/fields/text','text!bb-form/fields/html/textarea.html','bb-form/fields/text','text!bb-form/fields/html/select.html','text!bb-form/fields/html/file.html','bb-form/fields/file'],function defRetrieveInputTemplate(require, exports, module) {
+
+	var $             = require('jquery'),
+		_             = require('lodash'),
+		baseFieldView = require('bb-form/fields/base');
 
 	var aux = require('bb-form/aux');
 
@@ -549,23 +505,22 @@ define('bb-form/fields',['require','exports','module','jquery','lodash','lowerca
 	 */
 	exports.fields = {
 		text: {
-			template: _.template(require('text!bb-form/field-htmls/text.html')),
-			view    : require('bb-form/field-views/base'),
+			template: _.template(require('text!bb-form/fields/html/text.html')),
+			view    : require('bb-form/fields/text'),
 		},
 
 		textarea: {
-			template: _.template(require('text!bb-form/field-htmls/textarea.html')),
-			view    : require('bb-form/field-views/text')
+			template: _.template(require('text!bb-form/fields/html/textarea.html')),
+			view    : require('bb-form/fields/text')
 		},
 
 		select: {
-			template: _.template(require('text!bb-form/field-htmls/select.html')),
+			template: _.template(require('text!bb-form/fields/html/select.html')),
 		},
 
-
 		file: {
-			template: _.template(require('text!bb-form/field-htmls/file.html')),
-			view    : require('bb-form/field-views/file')
+			template: _.template(require('text!bb-form/fields/html/file.html')),
+			view    : require('bb-form/fields/file')
 		}
 
 	};
@@ -648,7 +603,7 @@ define('bb-form/fields',['require','exports','module','jquery','lodash','lowerca
 		// defaults to backbone.view.
 		var inputView = fieldModel.get('view') ||
 			this.fields[fieldModel.get('type')].view ||
-			backbone.view;
+			baseFieldView;
 
 		// return the instance of the inputView.
 		return inputView(options);
@@ -694,8 +649,10 @@ define('bb-form/fields',['require','exports','module','jquery','lodash','lowerca
 					error: 'Value for field ' + attribute + ' is empty.'
 				}
 			}
-		}
+		},
 	};
+
+	exports.validators.select = exports.validators.text;
 
 
 

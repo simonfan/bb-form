@@ -10,11 +10,9 @@ define(function (require, exports, module) {
 	var bbcv = require('bbcv'),
 		bbmv = require('bbmv');
 
-	var bbForm = module.exports = bbcv.extend({
+	var bbForm = bbcv.extend({
 
 		initialize: function initializeBbForm(options) {
-
-
 			// create a model view instance
 			this.bbmvInstance = bbmv({
 				el   : this.$el,
@@ -24,14 +22,24 @@ define(function (require, exports, module) {
 			// initialize bbcv
 			// AFTER
 			bbcv.prototype.initialize.call(this, options);
-
-			// save reference to the model represented by the form
-			this.model = options.model || this.model;
 		},
+
 	});
 
-
+	// assign field extensions to the form view.
 	bbForm.assignProto(require('bb-form/fields'));
 
 
+	// assign static methods
+	bbForm.assignStatic({
+		defineFields: function defineFields(fieldDefinitions) {
+
+		},
+
+		extendFields: function extendFields(fieldDefinitions) {
+
+		},
+	});
+
+	module.exports = bbForm;
 });

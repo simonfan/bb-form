@@ -88,9 +88,9 @@
     <pre class="code prettyprint linenums">
 define(function defRetrieveInputTemplate(require, exports, module) {
 
-	var $        = require(&#x27;jquery&#x27;),
-		_        = require(&#x27;lodash&#x27;),
-		backbone = require(&#x27;lowercase-backbone&#x27;);
+	var $             = require(&#x27;jquery&#x27;),
+		_             = require(&#x27;lodash&#x27;),
+		baseFieldView = require(&#x27;bb-form/fields/base&#x27;);
 
 	var aux = require(&#x27;bb-form/aux&#x27;);
 
@@ -100,23 +100,22 @@ define(function defRetrieveInputTemplate(require, exports, module) {
 	 */
 	exports.fields = {
 		text: {
-			template: _.template(require(&#x27;text!bb-form/field-htmls/text.html&#x27;)),
-			view    : require(&#x27;bb-form/field-views/base&#x27;),
+			template: _.template(require(&#x27;text!bb-form/fields/html/text.html&#x27;)),
+			view    : require(&#x27;bb-form/fields/text&#x27;),
 		},
 
 		textarea: {
-			template: _.template(require(&#x27;text!bb-form/field-htmls/textarea.html&#x27;)),
-			view    : require(&#x27;bb-form/field-views/text&#x27;)
+			template: _.template(require(&#x27;text!bb-form/fields/html/textarea.html&#x27;)),
+			view    : require(&#x27;bb-form/fields/text&#x27;)
 		},
 
 		select: {
-			template: _.template(require(&#x27;text!bb-form/field-htmls/select.html&#x27;)),
+			template: _.template(require(&#x27;text!bb-form/fields/html/select.html&#x27;)),
 		},
 
-
 		file: {
-			template: _.template(require(&#x27;text!bb-form/field-htmls/file.html&#x27;)),
-			view    : require(&#x27;bb-form/field-views/file&#x27;)
+			template: _.template(require(&#x27;text!bb-form/fields/html/file.html&#x27;)),
+			view    : require(&#x27;bb-form/fields/file&#x27;)
 		}
 
 	};
@@ -199,7 +198,7 @@ define(function defRetrieveInputTemplate(require, exports, module) {
 		// defaults to backbone.view.
 		var inputView = fieldModel.get(&#x27;view&#x27;) ||
 			this.fields[fieldModel.get(&#x27;type&#x27;)].view ||
-			backbone.view;
+			baseFieldView;
 
 		// return the instance of the inputView.
 		return inputView(options);
@@ -245,8 +244,10 @@ define(function defRetrieveInputTemplate(require, exports, module) {
 					error: &#x27;Value for field &#x27; + attribute + &#x27; is empty.&#x27;
 				}
 			}
-		}
+		},
 	};
+
+	exports.validators.select = exports.validators.text;
 
 
 

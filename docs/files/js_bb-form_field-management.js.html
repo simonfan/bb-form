@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>js/bb-form/aux.js - bb-form</title>
+    <title>js/bb-form/field-management.js - bb-form</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -82,25 +82,95 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: js/bb-form/aux.js</h1>
+                        <h1 class="file-heading">File: js/bb-form/field-management.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-define(function defBbFormAux(require, exports, module) {
+define(function defCreateField(require, exports, module) {
 
+	var $ = require(&#x27;jquery&#x27;),
+		_ = require(&#x27;lodash&#x27;);
 
+	// private functions
 	/**
-	 * Converts a camel cased string to a dashed one.
-	 * Copied from:
-	 * http://jamesroberts.name/blog/2010/02/22/string-functions-for-javascript-trim-to-camel-case-to-dashed-and-to-underscore/
+	 * Creates a single field.
 	 *
-	 * @param  {[type]} str [description]
-	 * @return {[type]}     [description]
+	 * @param  {[type]} fieldOptions [description]
+	 * @return {[type]}              [description]
 	 */
-	exports.camelCaseToDashed = function camelCaseToDashed(str) {
-		return str.replace(/([A-Z])/g, function (s) {return &quot;-&quot; + s.toLowerCase(); });
+	function _createField(fieldOptions) {
+
+		// [0] check for required arguments
+		if (!fieldOptions.type) {
+			throw new Error(&#x27;[bb-form | createField] Type is required as a field option.&#x27;);
+		}
+
+		// [1] create a fieldElementWrapper DOM element
+		var html = _.isFunction(this.fieldElementWrapper) ?
+			this.fieldElementWrapper(fieldOptions) : this.fieldElementWrapper;
+
+		var $fieldElementWrapper = $(html).appendTo(this.$container);
+
+		// [2] retrieve view constructor
+		var constructor = this.fieldConstructors[fieldOptions.type];
+
+		// [3] set field options
+		fieldOptions.formView = this;
+		fieldOptions.model    = this.model;
+		fieldOptions.el       = $fieldElementWrapper;
+
+		// [4] instantiate and store
+		var instance = constructor(fieldOptions);
+		this.fieldViews.push(instance);
+
+		return instance;
+	}
+
+
+	exports.fieldConstructors = {
+		text    : require(&#x27;bb-form/fields/text&#x27;),
+		textarea: require(&#x27;bb-form/fields/textarea&#x27;),
+		select  : require(&#x27;bb-form/fields/select&#x27;),
 	};
 
+
+	exports.fieldElementWrapper = &#x27;&lt;div&gt;&lt;/div&gt;&#x27;;
+
+	/**
+	 * Creates form fields.
+	 *
+	 * @param  {[type]} fields [description]
+	 * @return {[type]}        [description]
+	 */
+	exports.createField = function createField(fields) {
+
+		if (_.isArray(fields)) {
+			// multiple fields
+			return _.map(fields, _createField, this);
+
+		} else {
+			// single
+			return _createField.call(this, fields);
+		}
+	};
+
+
+	exports.removeField = function removeField(fieldView) {
+
+		// [1] get the view cid
+		var cid = _.isObject(fieldView) ? fieldView.cid : fieldView;
+
+		var index = _.indexOf(this.fieldViews, function (fv) {
+			return fv.cid === cid;
+		});
+
+		if (!_.isUndefined(index)) {
+			var toRemove = this.fieldViews.splice(index, 1);
+			toRemove[0].remove();
+		}
+
+		return this;
+	};
 });
 
     </pre>

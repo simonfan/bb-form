@@ -3,10 +3,6 @@ define(function defCreateField(require, exports, module) {
 	var $ = require('jquery'),
 		_ = require('lodash');
 
-
-
-
-
 	// private functions
 	/**
 	 * Creates a single field.

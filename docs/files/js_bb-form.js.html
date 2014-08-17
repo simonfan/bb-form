@@ -95,45 +95,47 @@
 define(function (require, exports, module) {
 	&#x27;use strict&#x27;;
 
-	var bbcv = require(&#x27;bbcv&#x27;),
-		bbmv = require(&#x27;bbmv&#x27;);
+	var bbmv = require(&#x27;bbmv&#x27;);
 
-
-	var fieldsView = require(&#x27;bb-form/fields/index&#x27;);
 
 	var bbForm = bbmv.extend({
+
 		initialize: function initializeBbForm(options) {
 			bbmv.prototype.initialize.call(this, options);
 
-			// create a fields view
-			this.fields = fieldsView(_.clone(options));
-		},
-	})
+			// pick some options
+			_.each([&#x27;containerSelector&#x27;], function (opt) {
+				this[opt] = options[opt] || this[opt];
+			}, this);
 
-	var bbForm = module.exports = bbcv.extend({
+			// find $container element (defaults to the $el itself)
+			this.$container = this.containerSelector ?
+				this.$el.find(this.containerSelector) : this.$el;
 
-		initialize: function initializeBbForm(options) {
+			// array onto which field views are stored
+			this.fieldViews = [];
 
-
-			// create a model view instance
-			this.bbmvInstance = bbmv({
-				el   : this.$el,
-				model: options.model
-			});
-
-			// initialize bbcv
-			// AFTER
-			bbcv.prototype.initialize.call(this, options);
-
-			// save reference to the model represented by the form
-			this.model = options.model || this.model;
+			// instantiate fields
+			if (options.fields) {
+				this.createField(options.fields);
+			}
 		},
 	});
 
+	bbForm.assignProto(require(&#x27;bb-form/field-management&#x27;));
 
-	bbForm.assignProto(require(&#x27;bb-form/fields&#x27;));
+	// assign static methods
+	bbForm.assignStatic({
+		fieldConstructor: function fieldConstructor(type, constructor) {
 
+		},
 
+		extendFieldDefinitions: function extendFieldDefinitions(fieldDefinitions) {
+
+		},
+	});
+
+	module.exports = bbForm;
 });
 
     </pre>

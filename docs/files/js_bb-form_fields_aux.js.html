@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>js/bb-form/fields/base.js - bb-form</title>
+    <title>js/bb-form/fields/aux.js - bb-form</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -82,69 +82,25 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: js/bb-form/fields/base.js</h1>
+                        <h1 class="file-heading">File: js/bb-form/fields/aux.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-define(function defBaseFieldView(require, exports, module) {
+define(function defBbFormAux(require, exports, module) {
 
 
-	var view = require(&#x27;lowercase-backbone&#x27;).view,
-		_    = require(&#x27;lodash&#x27;);
+	/**
+	 * Converts a camel cased string to a dashed one.
+	 * Copied from:
+	 * http://jamesroberts.name/blog/2010/02/22/string-functions-for-javascript-trim-to-camel-case-to-dashed-and-to-underscore/
+	 *
+	 * @param  {[type]} str [description]
+	 * @return {[type]}     [description]
+	 */
+	exports.camelCaseToDashed = function camelCaseToDashed(str) {
+		return str.replace(/([A-Z])/g, function (s) {return &quot;-&quot; + s.toLowerCase(); });
+	};
 
-	// keep direct reference to the initialization.
-	var _initialize = view.prototype.initialize;
-
-	module.exports = view.extend({
-
-		initialize: function initializeTextView(options) {
-			_initialize.call(this, options);
-
-			// save reference to the formView
-			// and the formModel
-			this.formView  = options.formView;
-			this.formModel = options.formModel;
-
-			// get the attribute this input should represent.
-			var attribute = this.model.get(&#x27;attribute&#x27;);
-
-			// listen to changes.
-			this.listenTo(this.formModel, &#x27;change:&#x27; + attribute, this.handleValueChange);
-
-		},
-
-		/**
-		 * Handles changes on the value of the input.
-		 * @return {[type]} [description]
-		 */
-		handleValueChange: function handleValueChange() {
-
-			var fieldModel = this.model,
-				attribute  = fieldModel.get(&#x27;attribute&#x27;),
-				value      = this.formModel.get(attribute);
-
-				// run validation.
-			var validationError = this.formView.validate(attribute, value, fieldModel);
-
-			if (validationError) {
-				this.handleValidationError(validationError);
-			} else {
-				this.handleValidationSuccess();
-			}
-		},
-
-		handleValidationError: function handleValidationError(error) {
-			this.$el.addClass(&#x27;invalid&#x27;);
-
-			this.$el.find(&#x27;[data-bb-form-message]&#x27;).show().html(error.error);
-		},
-
-		handleValidationSuccess: function handleValidationSuccess() {
-			this.$el.removeClass(&#x27;invalid&#x27;);
-			this.$el.find(&#x27;[data-bb-form-message]&#x27;).hide().html(&#x27;&#x27;);
-		},
-
-	});
 });
 
     </pre>

@@ -1,11 +1,23 @@
 define(['bb-form', 'backbone', 'jquery', 'bbmv', 'lodash'],
 function (bbForm ,  Backbone ,  $      ,  bbmv ,  _      ) {
 
+	var Person = Backbone.Model.extend({
+		validate: function validatePerson(attributes, options) {
+
+
+			if (attributes.name.length > 10) {
+				return {
+					attribute: 'name',
+					error: 'Name too long'
+				};
+			}
+		},
+	})
 
 	///////////
 	// model //
 	///////////
-	var person = window.model = new Backbone.Model({
+	var person = window.person = new Person({
 		name: 'Rafael',
 		lastName: 'Marquez'
 	});
@@ -26,26 +38,18 @@ function (bbForm ,  Backbone ,  $      ,  bbmv ,  _      ) {
 	so the restriction on ASCII uppercase letters doesn't affect such documents
 	**/
 
-	var inputs = new Backbone.Collection([
-		{ type: 'text', attribute: 'name' },
-	]);
-
 	///////////////
 	// form view //
 	///////////////
 	var form = window.form = bbForm({
-		el        : $('#form'),
-		collection: inputs,
-		model     : person,
+		el   : $('#form'),
+		model: person,
 	});
 
-	inputs.add([
-		{ type: 'text', attribute: 'lastName' },
-		{ type: 'select', attribute: 'name', options: [{ label: 'Ana', value: 'Ana' }, { label: 'Rafa', value: 'Rafael'}]}
+	form.createField([
+		{ type: 'text', attribute: 'name' },
+		{ type: 'text', attribute: 'lastName' }
 	]);
-
-	inputs.remove(inputs.first());
-
 
 	//////////////////
 	// display view //
@@ -87,7 +91,7 @@ function (bbForm ,  Backbone ,  $      ,  bbmv ,  _      ) {
 
 			});
 
-			inputs.add({
+			form.createField({
 				type     : model.get('type'),
 				attribute: model.get('attribute'),
 				options  : options

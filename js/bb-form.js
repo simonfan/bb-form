@@ -7,36 +7,42 @@
 define(function (require, exports, module) {
 	'use strict';
 
-	var bbcv = require('bbcv'),
-		bbmv = require('bbmv');
+	var bbmv = require('bbmv');
 
-	var bbForm = bbcv.extend({
+
+	var bbForm = bbmv.extend({
 
 		initialize: function initializeBbForm(options) {
-			// create a model view instance
-			this.bbmvInstance = bbmv({
-				el   : this.$el,
-				model: options.model
-			});
+			bbmv.prototype.initialize.call(this, options);
 
-			// initialize bbcv
-			// AFTER
-			bbcv.prototype.initialize.call(this, options);
+			// pick some options
+			_.each(['containerSelector'], function (opt) {
+				this[opt] = options[opt] || this[opt];
+			}, this);
+
+			// find $container element (defaults to the $el itself)
+			this.$container = this.containerSelector ?
+				this.$el.find(this.containerSelector) : this.$el;
+
+			// array onto which field views are stored
+			this.fieldViews = [];
+
+			// instantiate fields
+			if (options.fields) {
+				this.createField(options.fields);
+			}
 		},
-
 	});
 
-	// assign field extensions to the form view.
-	bbForm.assignProto(require('bb-form/fields'));
-
+	bbForm.assignProto(require('bb-form/field-management'));
 
 	// assign static methods
 	bbForm.assignStatic({
-		defineFields: function defineFields(fieldDefinitions) {
+		fieldConstructor: function fieldConstructor(type, constructor) {
 
 		},
 
-		extendFields: function extendFields(fieldDefinitions) {
+		extendFieldDefinitions: function extendFieldDefinitions(fieldDefinitions) {
 
 		},
 	});

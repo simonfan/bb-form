@@ -35,6 +35,9 @@ define(function defCreateField(require, exports, module) {
 		var instance = constructor(fieldOptions);
 		this.fieldViews.push(instance);
 
+
+		//
+
 		return instance;
 	}
 

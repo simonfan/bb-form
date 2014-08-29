@@ -1,0 +1,215 @@
+<!doctype html>
+
+<html>
+
+<head>
+
+	<meta charset="utf-8">
+
+	<title>main</title>
+
+	<link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+
+	<script type="text/javascript" src="../bower_components/requirejs/require.js"></script>
+	<script type="text/javascript">
+
+		// load amdconfig manually
+		require(['../amdconfig'], function(undef) {
+			// load demo
+			require(['bb-form', 'jquery', 'backbone', 'bbmv', 'lodash'], function(bbForm, $, Backbone, bbmv, _) {
+
+
+
+
+				var Person = Backbone.Model.extend({
+					validate: function validatePerson(attributes, options) {
+
+
+						if (attributes.name.length > 10) {
+							return {
+								attribute: 'name',
+								error: 'Name too long'
+							};
+						}
+					},
+				})
+
+				///////////
+				// model //
+				///////////
+				var person = window.person = new Person({
+					name: 'Rafael',
+					lastName: 'Marquez'
+				});
+
+				var personView = bbmv({
+					el: $('#display'),
+					model: person
+				});
+
+
+
+
+
+				var template = [
+					'<div>',
+						'<h1>Crazy <%- header %></h1>',
+						'<input data-bind-<%- attribute %>="val"/>',
+					'</div>'
+				].join('');
+
+
+
+				var extended = bbForm.extendFieldConstructors({
+					crazyField: function (options) {
+
+
+						options.el.html(_.template(template, options));
+
+						options.formView.incorporate(options.el);
+
+						return {
+							remove: function () {
+								// do whatever is needed for removal
+								options.el.remove();
+							}
+						}
+					},
+				});
+
+
+				// instantiate
+				window.extendedFormInstance = extended({
+					el   : $('#form'),
+					model: person,
+				});
+
+
+
+
+
+
+
+				// FORM BUILDER VIEEW
+				///////////////////////
+				// form builder view //
+				///////////////////////
+				var formBuilder = bbmv.extend({
+					addField: function () {
+
+						var model = this.model;
+
+
+						// parse out options
+						var options = model.get('options') ? model.get('options').split(/\s*,\s*/) : [];
+
+						options = _.map(options, function (optStr, index) {
+
+							var option = {},
+								split  = optStr.split(/\s*:\s*/);
+
+							if (split.length === 1) {
+
+								// option label and value are the same.
+								option.label = split[0];
+								option.value = split[0];
+
+							} else {
+								option.label = split[0];
+								option.value = split[1];
+							}
+
+							return option;
+
+						});
+
+
+						var fieldOptions = model.toJSON();
+
+						_.assign(fieldOptions, options);
+
+						extendedFormInstance.createField(fieldOptions);
+						// clear
+						model.clear();
+					}
+				})({
+					el: $('#form-builder'),
+					model: new Backbone.Model({
+						type: 'crazyField',
+
+					})
+				});
+
+			});
+		});
+
+	</script>
+
+	<style type="text/css">
+		.invalid {
+			border: 1px dashed red;
+		}
+
+		input {
+			transition: all 0.5s ease;
+		}
+
+		.invalid input {
+			background-color: #FFABAB;
+		}
+	</style>
+
+</head>
+
+<body>
+
+	<a href="../index.html">Menu</a>
+
+	<div class="container-fluid">
+
+		<div class="row">
+			<div id="display" class="col-md-4">
+
+				<div class="row">
+					<span class="col-md-3">Name</span>
+					<span class="col-md-9" data-bind-out-name="html"></span>
+				</div>
+				<div class="row">
+					<span class="col-md-3">Last Name</span>
+					<span class="col-md-9" data-bind-out-last-name="html"></span>
+				</div>
+				<div class="row">
+					<span class="col-md-3">Labels</span>
+					<span class="col-md-9" data-bind-out-labels="html"></span>
+				</div>
+			</div>
+
+			<div id="form" class="col-md-4"></div>
+
+			<div id="form-builder" class="col-md-4">
+				<div class="row">
+					<b>type:</b>
+					<br>
+					<input data-bind-type="value" placeholder="type">
+				</div>
+				<div class="row">
+					<b>attribute:</b>
+					<br>
+					<input data-bind-attribute="value" placeholder="type">
+				</div>
+				<div class="row">
+					<b>header:</b>
+					<br>
+					<input data-bind-header="value" placeholder="header">
+				</div>
+
+				<button data-bind-on-click="addField" >CREATE FIELD</button>
+			</div>
+		</div>
+
+	</div>
+
+
+</body>
+
+</html>

@@ -79,7 +79,7 @@
         },
         {
             "file": "js/bb-form/field-management.js",
-            "line": 51,
+            "line": 54,
             "description": "Creates form fields.",
             "params": [
                 {
@@ -93,6 +93,47 @@
                 "type": "[type]"
             },
             "class": ""
+        },
+        {
+            "file": "js/bb-form.js",
+            "line": 43,
+            "description": "Defines extra field constructor",
+            "params": [
+                {
+                    "name": "type",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "constructor",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": "",
+            "module": "BbForm"
+        },
+        {
+            "file": "js/bb-form.js",
+            "line": 67,
+            "description": "Extends the field definitions AND the factory itself",
+            "params": [
+                {
+                    "name": "fieldConstructors",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": "",
+            "module": "BbForm"
         }
     ],
     "warnings": [
@@ -106,7 +147,15 @@
         },
         {
             "message": "Missing item type\nCreates form fields.",
-            "line": " js/bb-form/field-management.js:51"
+            "line": " js/bb-form/field-management.js:54"
+        },
+        {
+            "message": "Missing item type\nDefines extra field constructor",
+            "line": " js/bb-form.js:43"
+        },
+        {
+            "message": "Missing item type\nExtends the field definitions AND the factory itself",
+            "line": " js/bb-form.js:67"
         }
     ]
 }

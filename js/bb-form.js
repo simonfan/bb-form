@@ -7,7 +7,8 @@
 define(function (require, exports, module) {
 	'use strict';
 
-	var bbmv = require('bbmv');
+	var bbmv = require('bbmv'),
+		_    = require('lodash');
 
 
 	var bbForm = bbmv.extend({
@@ -38,12 +39,46 @@ define(function (require, exports, module) {
 
 	// assign static methods
 	bbForm.assignStatic({
-		fieldConstructor: function fieldConstructor(type, constructor) {
 
+		/**
+		 * Defines extra field constructor
+		 *
+		 * @param  {[type]} type        [description]
+		 * @param  {[type]} constructor [description]
+		 * @return {[type]}             [description]
+		 */
+		fieldConstructor: function fieldConstructor() {
+
+			if (_.isObject(arguments[0])) {
+				// multiple
+				// arguments = [{ type: constructor }]
+				_.assign(this.fieldConstructors, arguments[0]);
+			} else {
+				// single
+				// arguments = [type, constructor]
+				//
+				this.fieldConstructors[arguments[0]] = arguments[1];
+			}
+
+			return this;
 		},
 
-		extendFieldDefinitions: function extendFieldDefinitions(fieldDefinitions) {
 
+		/**
+		 * Extends the field definitions AND the factory itself
+		 *
+		 * @param  {[type]} fieldConstructors [description]
+		 * @return {[type]}                  [description]
+		 */
+		extendFieldConstructors: function extendFieldConstructors(fieldConstructors) {
+
+			var newFieldConstructors = _.create(this.fieldConstructors);
+
+			_.assign(newFieldConstructors, fieldConstructors);
+
+			return this.extend({
+				fieldConstructors: newFieldConstructors
+			});
 		},
 	});
 

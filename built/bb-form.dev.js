@@ -352,9 +352,9 @@ define('bb-form',['require','exports','module','bbmv','lodash','bb-form/field-ma
 		 * @param  {[type]} fieldConstructors [description]
 		 * @return {[type]}                  [description]
 		 */
-		extendFieldConstructors: function extendFieldConstructors(fieldConstructors) {
 
-			var newFieldConstructors = _.create(this.fieldConstructors);
+		extendFieldConstructors: function extendFieldConstructors(fieldConstructors) {
+			var newFieldConstructors = _.create(this.prototype.fieldConstructors);
 
 			_.assign(newFieldConstructors, fieldConstructors);
 

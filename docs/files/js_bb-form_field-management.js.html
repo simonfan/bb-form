@@ -114,6 +114,10 @@ define(function defCreateField(require, exports, module) {
 		// [2] retrieve view constructor
 		var constructor = this.fieldConstructors[fieldOptions.type];
 
+		if (!_.isFunction(constructor)) {
+			throw new Error(fieldOptions.type + &#x27; is not a field constructor function.&#x27;);
+		}
+
 		// [3] set field options
 		fieldOptions.formView = this;
 		fieldOptions.model    = this.model;

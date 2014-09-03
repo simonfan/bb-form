@@ -148,7 +148,7 @@ define('bb-form/fields/base/incorporated',['require','exports','module','bb-form
 });
 
 
-define('text!bb-form/fields/html/text.html',[],function () { return '<input data-bb-form-attribute="<%- attribute %>" type="text" data-bind-<%- attribute %>="value">\n\n<div data-bb-form-message></div>\n';});
+define('text!bb-form/fields/html/text.html',[],function () { return '<b><%- attribute %></b><br>\n\n<input data-bb-form-attribute="<%- attribute %>" type="text" data-bind-<%- attribute %>="value">\n\n<div data-bb-form-message></div>\n';});
 
 define('bb-form/fields/text',['require','exports','module','lodash','bb-form/fields/base/incorporated','text!bb-form/fields/html/text.html'],function defTextInputView(require, exports, module) {
 
@@ -163,7 +163,7 @@ define('bb-form/fields/text',['require','exports','module','lodash','bb-form/fie
 });
 
 
-define('text!bb-form/fields/html/textarea.html',[],function () { return '<div>\n\t<textarea data-bind-<%- attribute %>="value"></textarea>\n</div>\n';});
+define('text!bb-form/fields/html/textarea.html',[],function () { return '<b><%- attribute %></b><br>\n<textarea data-bind-<%- attribute %>="value"></textarea>\n';});
 
 define('bb-form/fields/textarea',['require','exports','module','lodash','bb-form/fields/text','text!bb-form/fields/html/textarea.html'],function defTextInputView(require, exports, module) {
 
@@ -217,6 +217,10 @@ define('bb-form/field-management',['require','exports','module','jquery','lodash
 
 		// [2] retrieve view constructor
 		var constructor = this.fieldConstructors[fieldOptions.type];
+
+		if (!_.isFunction(constructor)) {
+			throw new Error(fieldOptions.type + ' is not a field constructor function.');
+		}
 
 		// [3] set field options
 		fieldOptions.formView = this;

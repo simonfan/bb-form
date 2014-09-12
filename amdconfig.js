@@ -44,7 +44,8 @@ require.config({
 		'jquery.fileupload-ui': '../bower_components/jquery-file-upload/js/jquery.fileupload-ui',
 		'jquery.fileupload-jquery-ui': '../bower_components/jquery-file-upload/js/jquery.fileupload-jquery-ui',
 		'jquery.fileupload-angular': '../bower_components/jquery-file-upload/js/jquery.fileupload-angular',
-		'jquery.iframe-transport': '../bower_components/jquery-file-upload/js/jquery.iframe-transport'
+		'jquery.iframe-transport': '../bower_components/jquery-file-upload/js/jquery.iframe-transport',
+		'bb-rendered-view': '../bower_components/bb-rendered-view/built/bb-rendered-view'
 	},
 	shim: {
 		backbone: {

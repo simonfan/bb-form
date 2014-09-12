@@ -1,15 +1,30 @@
 define(function defIncorporatedFieldView(require, exports, module) {
 
-	var renderedFieldView = require('bb-form/fields/base/rendered');
+	var baseView = require('bb-form/fields/base/validated'),
+		aux      = require('bb-form/fields/aux');
 
-	module.exports = renderedFieldView.extend({
+	module.exports = baseView.extend({
 
 		initialize: function initializeTextInput(options) {
-			renderedFieldView.prototype.initialize.call(this, options);
+			baseView.prototype.initialize.call(this, options);
 
 			// let the form view incorporate the final field $el
 			this.formView.incorporate(this.$el);
 		},
+
+		templateDataParse: function templateDataParse(data) {
+
+			if (data.attribute) {
+				data.attribute = aux.camelCaseToDashed(data.attribute);
+			}
+
+			if (data.attributes) {
+				data.attributes = _.map(data.attributes, aux.camelCaseToDashed);
+			}
+
+			return data;
+		},
+
 	});
 
 });

@@ -1,14 +1,15 @@
 {
   "name": "bb-form",
   "main": "built/bb-form.js",
-  "version": "0.2.3",
+  "version": "0.3.3",
   "description": "Some module...",
   "dependencies": {
     "bbmv": "0.14.17",
     "lodash": "~2.4.1",
     "bb-dock": "0.7.11",
     "jquery": "~2.1.1",
-    "lowercase-backbone": "0.3.8"
+    "lowercase-backbone": "0.3.8",
+    "bb-rendered-view": "~0.1.0"
   },
   "devDependencies": {
     "requirejs": "*",

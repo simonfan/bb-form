@@ -1,7 +1,8 @@
-define('bb-form/fields/base/validated',['require','exports','module','lowercase-backbone','lodash'],function defValidatedFieldView(require, exports, module) {
+define("bb-rendered-view",["require","exports","module","lowercase-backbone","lodash"],function(e,t,a){var i=e("lowercase-backbone").view,r=e("lodash"),l=i.prototype.initialize,s=i.extend({initialize:function(e){l.apply(this,r.toArray(arguments)),r.each(["template","templateCompiler","templateDataDefaults","templateDataParse","render"],function(t){this[t]=e[t]||this[t]},this),this.render(e)},templateCompiler:r.template,template:void 0,templateDataDefaults:{},templateDataParse:function(e){return r.assign({},this.templateDataDefaults,e)},render:function(e){var t,a=this.template;if(a){var i=this.templateDataParse(e);r.isFunction(a)?t=a(i):r.isString(a)&&(t=this.templateCompiler(a)(i)),this.$el.html(t)}return this}});a.exports=s});
+define('bb-form/fields/base/validated',['require','exports','module','bb-rendered-view','lodash'],function defValidatedFieldView(require, exports, module) {
 
 
-	var view = require('lowercase-backbone').view,
+	var view = require('bb-rendered-view'),
 		_    = require('lodash');
 
 	// keep direct reference to the initialization.
@@ -41,10 +42,10 @@ define('bb-form/fields/base/validated',['require','exports','module','lowercase-
 			this.listenTo(this.model, 'invalid', _handleModelInvalid);
 
 			// listen to changes on attributes
-			var changeEvents = _.reduce(this.fieldAttributes, function (evtStr, attr) {
-				return evtStr + 'change:' + attr + ' ';
-			}, '');
-			this.listenTo(this.model, changeEvents, _handleModelChange);
+			// var changeEvents = _.reduce(this.fieldAttributes, function (evtStr, attr) {
+			// 	return evtStr + 'change:' + attr + ' ';
+			// }, '');
+			this.listenTo(this.model, 'change', _handleModelChange);
 
 		},
 
@@ -78,32 +79,21 @@ define('bb-form/fields/aux',['require','exports','module'],function defBbFormAux
 
 });
 
-define('bb-form/fields/base/rendered',['require','exports','module','lodash','bb-form/fields/base/validated','bb-form/fields/aux'],function defRenderedFieldView(require, exports, module) {
+define('bb-form/fields/base/incorporated',['require','exports','module','bb-form/fields/base/validated','bb-form/fields/aux'],function defIncorporatedFieldView(require, exports, module) {
 
+	var baseView = require('bb-form/fields/base/validated'),
+		aux      = require('bb-form/fields/aux');
 
-	var _ = require('lodash');
-
-
-	var validatedFieldView = require('bb-form/fields/base/validated'),
-		aux                = require('bb-form/fields/aux');
-
-	module.exports = validatedFieldView.extend({
+	module.exports = baseView.extend({
 
 		initialize: function initializeTextInput(options) {
-			validatedFieldView.prototype.initialize.call(this, options);
-
-			// invoke rendering.
-			this.render(options);
+			baseView.prototype.initialize.call(this, options);
 
 			// let the form view incorporate the final field $el
-			options.formView.incorporate(this.$el);
+			this.formView.incorporate(this.$el);
 		},
 
-		template: function fakeTpl() {
-			return 'Replace with your field template.'
-		},
-
-		templateData: function templateData(data) {
+		templateDataParse: function templateDataParse(data) {
 
 			if (data.attribute) {
 				data.attribute = aux.camelCaseToDashed(data.attribute);
@@ -116,33 +106,6 @@ define('bb-form/fields/base/rendered',['require','exports','module','lodash','bb
 			return data;
 		},
 
-		render: function renderTextInputHtml(data) {
-
-			data = this.templateData(data);
-
-			// set default data values before calling the
-			// templating function
-
-			this.$el.html(this.template(data));
-
-			return this;
-		}
-	});
-
-});
-
-define('bb-form/fields/base/incorporated',['require','exports','module','bb-form/fields/base/rendered'],function defIncorporatedFieldView(require, exports, module) {
-
-	var renderedFieldView = require('bb-form/fields/base/rendered');
-
-	module.exports = renderedFieldView.extend({
-
-		initialize: function initializeTextInput(options) {
-			renderedFieldView.prototype.initialize.call(this, options);
-
-			// let the form view incorporate the final field $el
-			this.formView.incorporate(this.$el);
-		},
 	});
 
 });

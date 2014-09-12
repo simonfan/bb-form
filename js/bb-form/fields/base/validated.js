@@ -1,7 +1,7 @@
 define(function defValidatedFieldView(require, exports, module) {
 
 
-	var view = require('lowercase-backbone').view,
+	var view = require('bb-rendered-view'),
 		_    = require('lodash');
 
 	// keep direct reference to the initialization.
@@ -41,10 +41,10 @@ define(function defValidatedFieldView(require, exports, module) {
 			this.listenTo(this.model, 'invalid', _handleModelInvalid);
 
 			// listen to changes on attributes
-			var changeEvents = _.reduce(this.fieldAttributes, function (evtStr, attr) {
-				return evtStr + 'change:' + attr + ' ';
-			}, '');
-			this.listenTo(this.model, changeEvents, _handleModelChange);
+			// var changeEvents = _.reduce(this.fieldAttributes, function (evtStr, attr) {
+			// 	return evtStr + 'change:' + attr + ' ';
+			// }, '');
+			this.listenTo(this.model, 'change', _handleModelChange);
 
 		},
 

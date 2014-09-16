@@ -79,7 +79,7 @@
         },
         {
             "file": "js/bb-form/field-management.js",
-            "line": 58,
+            "line": 61,
             "description": "Creates form fields.",
             "params": [
                 {
@@ -147,7 +147,7 @@
         },
         {
             "message": "Missing item type\nCreates form fields.",
-            "line": " js/bb-form/field-management.js:58"
+            "line": " js/bb-form/field-management.js:61"
         },
         {
             "message": "Missing item type\nDefines extra field constructor",

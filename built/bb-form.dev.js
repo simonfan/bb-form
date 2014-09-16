@@ -167,6 +167,9 @@ define('bb-form/field-management',['require','exports','module','jquery','lodash
 	 */
 	function _createField(fieldOptions) {
 
+		// clone fieldOptions
+		fieldOptions = _.clone(fieldOptions);
+
 		// [0] check for required arguments
 		if (!fieldOptions.type) {
 			throw new Error('[bb-form | createField] Type is required as a field option.');

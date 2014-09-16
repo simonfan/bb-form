@@ -12,6 +12,9 @@ define(function defCreateField(require, exports, module) {
 	 */
 	function _createField(fieldOptions) {
 
+		// clone fieldOptions
+		fieldOptions = _.clone(fieldOptions);
+
 		// [0] check for required arguments
 		if (!fieldOptions.type) {
 			throw new Error('[bb-form | createField] Type is required as a field option.');

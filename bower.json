@@ -1,7 +1,7 @@
 {
   "name": "bb-form",
   "main": "built/bb-form.js",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Some module...",
   "dependencies": {
     "bbmv": "0.14.17",
